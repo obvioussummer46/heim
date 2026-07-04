@@ -7,6 +7,7 @@ import { useNostrSync } from '@/lib/nostr/useNostrSync';
 import { useNostrStore, type Note } from '@/lib/nostr/nostrStore';
 import dynamic from 'next/dynamic';
 import { Compose } from './Compose';
+import { EventsTab } from './EventsTab';
 import { FeedTab } from './FeedTab';
 import { NowTab } from './NowTab';
 import { PrecisionSelector } from './PrecisionSelector';
@@ -125,7 +126,7 @@ export default function AppShell() {
           <>
             {tab === 'feed' && <FeedTab onZap={onZap} />}
             {tab === 'now' && <NowTab />}
-            {tab === 'events' && <ComingSoon label="Nearby events" />}
+            {tab === 'events' && <EventsTab />}
           </>
         )}
 
@@ -180,14 +181,6 @@ export default function AppShell() {
           <p className="text-sm text-gray-400">Zaps coming in a later build step.</p>
         </Modal>
       )}
-    </div>
-  );
-}
-
-function ComingSoon({ label }: { label: string }) {
-  return (
-    <div className="flex h-full items-center justify-center text-sm text-gray-600">
-      {label} — under construction
     </div>
   );
 }
