@@ -5,11 +5,15 @@ import { getCurrentPosition, reverseGeocode } from '@/lib/location';
 import { useAppStore, type Tab } from '@/lib/store';
 import { useNostrSync } from '@/lib/nostr/useNostrSync';
 import { useNostrStore, type Note } from '@/lib/nostr/nostrStore';
+import dynamic from 'next/dynamic';
 import { Compose } from './Compose';
 import { FeedTab } from './FeedTab';
 import { NowTab } from './NowTab';
 import { PrecisionSelector } from './PrecisionSelector';
 import { TeleportSearch } from './TeleportSearch';
+
+// Leaflet touches `window` at import time — load the map only when opened.
+const MapView = dynamic(() => import('./MapView').then((m) => m.MapView), { ssr: false });
 
 const TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: 'now', label: 'Now', icon: '💬' },
@@ -26,6 +30,7 @@ export default function AppShell() {
   const setGeoDenied = useAppStore((s) => s.setGeoDenied);
   const tab = useAppStore((s) => s.tab);
   const setTab = useAppStore((s) => s.setTab);
+  const mapOpen = useAppStore((s) => s.mapOpen);
   const setMapOpen = useAppStore((s) => s.setMapOpen);
   const composeOpen = useAppStore((s) => s.composeOpen);
   const setComposeOpen = useAppStore((s) => s.setComposeOpen);
@@ -151,6 +156,9 @@ export default function AppShell() {
           </button>
         ))}
       </nav>
+
+      {/* map overlay */}
+      {mapOpen && hasLocation && <MapView onClose={() => setMapOpen(false)} />}
 
       {/* compose modal */}
       {composeOpen && (
