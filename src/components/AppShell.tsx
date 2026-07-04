@@ -5,6 +5,7 @@ import { getCurrentPosition, reverseGeocode } from '@/lib/location';
 import { useAppStore, type Tab } from '@/lib/store';
 import { useNostrSync } from '@/lib/nostr/useNostrSync';
 import { useNostrStore, type Note } from '@/lib/nostr/nostrStore';
+import { Compose } from './Compose';
 import { FeedTab } from './FeedTab';
 import { NowTab } from './NowTab';
 import { PrecisionSelector } from './PrecisionSelector';
@@ -26,6 +27,7 @@ export default function AppShell() {
   const tab = useAppStore((s) => s.tab);
   const setTab = useAppStore((s) => s.setTab);
   const setMapOpen = useAppStore((s) => s.setMapOpen);
+  const composeOpen = useAppStore((s) => s.composeOpen);
   const setComposeOpen = useAppStore((s) => s.setComposeOpen);
   const setSettingsOpen = useAppStore((s) => s.setSettingsOpen);
   const connectedRelays = useNostrStore((s) => s.connectedRelays);
@@ -149,6 +151,13 @@ export default function AppShell() {
           </button>
         ))}
       </nav>
+
+      {/* compose modal */}
+      {composeOpen && (
+        <Modal onClose={() => setComposeOpen(false)} title="Compose">
+          <Compose onClose={() => setComposeOpen(false)} />
+        </Modal>
+      )}
 
       {/* teleport modal */}
       {teleportOpen && (
