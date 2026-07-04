@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@noble/hashes": "^2.0.1",
     "leaflet": "^1.9.4",
     "next": "^14.2.21",
     "ngeohash": "^0.6.3",
