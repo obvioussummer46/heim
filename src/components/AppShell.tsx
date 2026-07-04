@@ -6,6 +6,7 @@ import { useAppStore, type Tab } from '@/lib/store';
 import { useNostrSync } from '@/lib/nostr/useNostrSync';
 import { useNostrStore, type Note } from '@/lib/nostr/nostrStore';
 import { FeedTab } from './FeedTab';
+import { NowTab } from './NowTab';
 import { PrecisionSelector } from './PrecisionSelector';
 import { TeleportSearch } from './TeleportSearch';
 
@@ -116,13 +117,13 @@ export default function AppShell() {
         ) : (
           <>
             {tab === 'feed' && <FeedTab onZap={onZap} />}
-            {tab === 'now' && <ComingSoon label="Local chat" />}
+            {tab === 'now' && <NowTab />}
             {tab === 'events' && <ComingSoon label="Nearby events" />}
           </>
         )}
 
-        {/* compose FAB */}
-        {hasLocation && (
+        {/* compose FAB (Now tab has its own inline input) */}
+        {hasLocation && tab !== 'now' && (
           <button
             onClick={() => setComposeOpen(true)}
             className="absolute bottom-4 right-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent-dim text-2xl text-white shadow-lg shadow-black/40 hover:bg-accent"
