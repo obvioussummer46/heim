@@ -11,6 +11,7 @@ import { EventsTab } from './EventsTab';
 import { FeedTab } from './FeedTab';
 import { NowTab } from './NowTab';
 import { PrecisionSelector } from './PrecisionSelector';
+import { Settings } from './Settings';
 import { TeleportSearch } from './TeleportSearch';
 import { ZapModal } from './ZapModal';
 
@@ -36,6 +37,7 @@ export default function AppShell() {
   const setMapOpen = useAppStore((s) => s.setMapOpen);
   const composeOpen = useAppStore((s) => s.composeOpen);
   const setComposeOpen = useAppStore((s) => s.setComposeOpen);
+  const settingsOpen = useAppStore((s) => s.settingsOpen);
   const setSettingsOpen = useAppStore((s) => s.setSettingsOpen);
   const connectedRelays = useNostrStore((s) => s.connectedRelays);
 
@@ -56,6 +58,9 @@ export default function AppShell() {
 
   useEffect(() => {
     if (location.source === 'none') locate();
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -173,6 +178,13 @@ export default function AppShell() {
       {teleportOpen && (
         <Modal onClose={() => setTeleportOpen(false)} title="Teleport">
           <TeleportSearch onDone={() => setTeleportOpen(false)} showGpsRetry={() => { locate(); setTeleportOpen(false); }} />
+        </Modal>
+      )}
+
+      {/* settings modal */}
+      {settingsOpen && (
+        <Modal onClose={() => setSettingsOpen(false)} title="Settings">
+          <Settings />
         </Modal>
       )}
 
