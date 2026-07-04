@@ -12,6 +12,7 @@ import { FeedTab } from './FeedTab';
 import { NowTab } from './NowTab';
 import { PrecisionSelector } from './PrecisionSelector';
 import { TeleportSearch } from './TeleportSearch';
+import { ZapModal } from './ZapModal';
 
 // Leaflet touches `window` at import time — load the map only when opened.
 const MapView = dynamic(() => import('./MapView').then((m) => m.MapView), { ssr: false });
@@ -175,10 +176,10 @@ export default function AppShell() {
         </Modal>
       )}
 
-      {/* zap modal placeholder — wired up in the zaps stage */}
+      {/* zap modal */}
       {zapTarget && (
-        <Modal onClose={() => setZapTarget(null)} title="Zap">
-          <p className="text-sm text-gray-400">Zaps coming in a later build step.</p>
+        <Modal onClose={() => setZapTarget(null)} title="Zap ⚡">
+          <ZapModal note={zapTarget} onClose={() => setZapTarget(null)} />
         </Modal>
       )}
     </div>
